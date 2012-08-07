@@ -16,20 +16,21 @@ If specified (with -w and -c options) values can be checked with
 WARNING or CRITICAL thresholds (apply to both heap and perm regions).
 
 This plugin also attach perfomance data to the output:
-`
-  pid=<pid>
-  heap=<heap-size-used>;<heap-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
-  perm=<perm-size-used>;<perm-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
+
+    pid=<pid>
+    heap=<heap-size-used>;<heap-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
+    perm=<perm-size-used>;<perm-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
 `
 
 Usage:
 ------
-`chech_jstat.sh [-v] [-h] [-p <pid> | -s <service>] [-w <%ratio>] [-c <%ratio>]
-       -v Print version and exit
-       -h This help
-       -p <pid> the PID of process to monitor
-       -s <service> the service name of process to monitor
-       -w <%> the warning threshold ratio current/max in %
-       -c <%> the critical threshold ratio current/max in %
-`
+
+    chech_jstat.sh [-v] [-h] [-p <pid> | -s <service>] [-w <%ratio>] [-c <%ratio>]
+        -v Print version and exit  
+        -h This help  
+        -p <pid> the PID of process to monitor  
+        -s <service> the service name of process to monitor  
+        -w <%> the warning threshold ratio current/max in %  
+        -c <%> the critical threshold ratio current/max in %  
+
  
