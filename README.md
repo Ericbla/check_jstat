@@ -20,7 +20,7 @@ This plugin also attach perfomance data to the output:
     pid=<pid>
     heap=<heap-size-used>;<heap-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
     perm=<perm-size-used>;<perm-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
-`
+
 
 Usage:
 ------
@@ -33,4 +33,3 @@ Usage:
         -w <%> the warning threshold ratio current/max in %  
         -c <%> the critical threshold ratio current/max in %  
 
- 
