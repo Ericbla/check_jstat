@@ -38,7 +38,7 @@ function usage() {
     exit 1
 }
 
-VERSION='1.0'
+VERSION='1.1'
 service=''
 pid=''
 ws=-1
@@ -140,11 +140,11 @@ if [ $cs -gt 0 -a $heapratio -ge $cs ]; then
     exit 2
 fi
 
-if [ $cs -gt 0 -a $permratio -ge $cs ]; then
+if [ $ws -gt 0 -a $permratio -ge $ws ]; then
     echo "WARNING: jstat process $label warning PermGen size|$perfdata"
     exit 1
 fi
-if [ $cs -gt 0 -a $heapratio -ge $cs ]; then
+if [ $ws -gt 0 -a $heapratio -ge $ws ]; then
     echo "WARNING: jstat process $label warning Heap size|$perfdata"
     exit 1
 fi
