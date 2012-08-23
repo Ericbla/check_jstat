@@ -27,52 +27,87 @@
 # Usage helper for this script
 function usage() {
     local prog="${1:-check_jstat.sh}"
-    echo "Usage: $prog [-v] [-h] [-p <pid> | -s <service>] [-w <%ratio>] [-c <%ratio>]";
-    echo "       -v Print version and exit"
-    echo "       -h This help"
-    echo "       -p <pid> the PID of process to monitor"
-    echo "       -s <service> the service name of process to monitor"
-    echo "       -w <%> the warning threshold ratio current/max in %"
-    echo "       -c <%> the critical threshold ratio current/max in %"
-   
-    exit 1
+    echo "Usage: $prog -v";
+    echo "       Print version and exit"
+    echo "Usage: $prog -h";
+    echo "      Print this help nd exit"
+    echo "Usage: $prog -p <pid> [-w <%ratio>] [-c <%ratio>]";
+    echo "Usage: $prog -s <service> [-w <%ratio>] [-c <%ratio>]";
+    echo "Usage: $prog -j <java-name> [-w <%ratio>] [-c <%ratio>]";
+    echo "       -p <pid>       the PID of process to monitor"
+    echo "       -s <service>   the service name of process to monitor"
+    echo "       -j <java-name> the java app (see jps) process to monitor"
+    echo "                      if this name in blank (-j '') any java app is"
+    echo "                      looked for (as long there is only one)"
+    echo "       -w <%>         the warning threshold ratio current/max in %"
+    echo "       -c <%>         the critical threshold ratio current/max in %"
 }
 
-VERSION='1.1'
+VERSION='1.2'
 service=''
 pid=''
 ws=-1
 cs=-1
+use_jps=0
 
-while getopts hvp:s:w:c: opt ; do
+while getopts hvp:s:j:w:c: opt ; do
     case ${opt} in
-    v)  echo "$0 version $VERSION";
+    v)  echo "$0 version $VERSION"
         exit 0
         ;;
-    h)  usage $0;
+    h)  usage $0
+        exit 3
         ;;
-    p)  pid="${OPTARG}";
+    p)  pid="${OPTARG}"
         ;;
-    s)  service="${OPTARG}";
+    s)  service="${OPTARG}"
         ;;
-    w)  ws="${OPTARG}";
+    j)  java_name="${OPTARG}"
+        use_jps=1
         ;;
-    c)  cs="${OPTARG}";
+    w)  ws="${OPTARG}"
+        ;;
+    c)  cs="${OPTARG}"
         ;;
     esac
 done
 
-if [ -z "$pid" -a -z "$service" ] ; then
-    echo "One of -p or -s parameter must be provided"
+if [ -z "$pid" -a -z "$service" -a $use_jps -eq 0 ] ; then
+    echo "One of -p, -s or -j parameter must be provided"
+    usage $0
     exit 3
 fi
 
 if [ -n "$pid" -a -n "$service" ] ; then
     echo "Only one of -p or -s parameter must be provided"
+    usage $0
+    exit 3
+fi
+if [ -n "$pid" -a $use_jps -eq 1 ] ; then
+    echo "Only one of -p or -j parameter must be provided"
+    usage $0
+    exit 3
+fi
+if [ -n "$service" -a $use_jps -eq 1 ] ; then
+    echo "Only one of -s or -j parameter must be provided"
+    usage $0
     exit 3
 fi
 
-if [ -n "$service" ] ; then
+if [ $use_jps -eq 1 ] ; then
+    if [ -n "$java_name" ] ; then
+        java=$(jps | grep "$java_name" 2>/dev/null)
+    else
+        java=$(jps | grep -v Jps 2>/dev/null)
+    fi
+    java_count=$(echo "$java" | wc -l)
+    if [ "$java_count" != "1" ] ; then
+        echo "UNKNOWN: No (or multiple) java app found"
+        exit 3
+    fi
+    pid=$(echo "$java" | cut -d ' ' -f 1)
+    label=${java_name:-$(echo "$java" | cut -d ' ' -f 2)}
+elif [ -n "$service" ] ; then
     if [ ! -r /var/run/${service}.pid ] ; then
         echo "/var/run/${service}.pid not found"
         exit 3
