@@ -1,27 +1,28 @@
 check_jstat
 ===========
 
-  A **Nagios** plugin to get memory statistics of a Java application using **jstat**.
+A **Nagios** plugin to get memory statistics of a Java application using **jstat**.
 
-  The process selection is done either by
-  
+The process selection is done either by:
 *  its pid (-p <pid>)
 *  its service name (-s <service-name>) (assuming there is a /var/run/<name>.pid file holding its pid)
 *  its java name (-j <java name>) where the java name depends ob how the java application has been launched (main class or jar/war in case of java -jar) (see jps).
 
-  It then call `jstat -gc` and `jstat -gccapacity` to catch current and
+
+It then call `jstat -gc` and `jstat -gccapacity` to catch current and
 maximum *heap* and *perm* sizes.
 What is called *heap* here is the edden + old generation space,
 while *perm* represents the permanent generation space.
 
-  If specified (with -w and -c options) values can be checked with
-WARNING or CRITICAL thresholds (apply to both heap and perm regions).
+If specified (with -w and -c options) values can be checked with
+**WARNING** or **CRITICAL** thresholds (apply to both heap and perm regions).
 
-  This plugin also attach perfomance data to the output:
+This plugin also attach perfomance data to the output:
 
-    pid=<pid>
-    heap=<heap-size-used>;<heap-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
-    perm=<perm-size-used>;<perm-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>
+    pid=<pid>  
+    heap=<heap-size-used>;<heap-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>  
+    perm=<perm-size-used>;<perm-max-size>;<%ratio>;<warning-threshold-%ratio>;<critical-threshold-%ratio>  
+
 
 
 Usage:
