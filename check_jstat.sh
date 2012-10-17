@@ -101,7 +101,7 @@ if [ $use_jps -eq 1 ] ; then
         java=$(jps | grep -v Jps 2>/dev/null)
     fi
     java_count=$(echo "$java" | wc -l)
-    if [ "$java_count" != "1" ] ; then
+    if [ -z "$java" -o "$java_count" != "1" ] ; then
         echo "UNKNOWN: No (or multiple) java app found"
         exit 3
     fi
