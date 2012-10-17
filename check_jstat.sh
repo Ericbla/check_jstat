@@ -101,7 +101,7 @@ if [ $use_jps -eq 1 ] ; then
         java=$(jps | grep -v Jps 2>/dev/null)
     fi
     java_count=$(echo "$java" | wc -l)
-    if [ "$java_count" != "1" ] ; then
+    if [ -z "$java" -o "$java_count" != "1" ] ; then
         echo "UNKNOWN: No (or multiple) java app found"
         exit 3
     fi
@@ -167,20 +167,20 @@ permratio=$((($pu * 100) / $pgcmx))
 perfdata="pid=$pid heap=$heap;$heapmx;$heapratio;$ws;$cs perm=$pu;$pgcmx;$permratio;$ws;$cs"
 
 if [ $cs -gt 0 -a $permratio -ge $cs ]; then
-    echo "CRITICAL: jstat process $label critical PermGen ({$permratio}% of MaxPermSize)|$perfdata"
+    echo "CRITICAL: jstat process $label critical PermGen (${permratio}% of MaxPermSize)|$perfdata"
     exit 2
 fi
 if [ $cs -gt 0 -a $heapratio -ge $cs ]; then
-    echo "CRITICAL: jstat process $label critical Heap ({$heapratio}% of MaxHeapSize)|$perfdata"
+    echo "CRITICAL: jstat process $label critical Heap (${heapratio}% of MaxHeapSize)|$perfdata"
     exit 2
 fi
 
 if [ $ws -gt 0 -a $permratio -ge $ws ]; then
-    echo "WARNING: jstat process $label warning PermGen ({$permratio}% of MaxPermSize)|$perfdata"
+    echo "WARNING: jstat process $label warning PermGen (${permratio}% of MaxPermSize)|$perfdata"
     exit 1
 fi
 if [ $ws -gt 0 -a $heapratio -ge $ws ]; then
-    echo "WARNING: jstat process $label warning Heap ({$heapratio}% of MaxHeapSize)|$perfdata"
+    echo "WARNING: jstat process $label warning Heap (${heapratio}% of MaxHeapSize)|$perfdata"
     exit 1
 fi
 echo "OK: jstat process $label alive|$perfdata"
