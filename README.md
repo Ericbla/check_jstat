@@ -49,5 +49,32 @@ Configuration:
 This plugin may require to be run with sudo. In this case add a configuration in /etc/sudoers. For example if nagios is the user that run nagios (or NRPE deamon):
 
     Defaults:nagios	!requiretty  
-    nagios ALL=(root) NOPASSWD: /opt/nagios/libexec/check_jstat.sh  
+    nagios ALL=(root) NOPASSWD: /opt/nagios/libexec/check_jstat.sh
+    
+check_of
+========
+
+Another**Nagios** plugin count the number of open files descriptors of a given process.
+
+The process selection is done either by:
+*  its pid (-p <pid>)
+*  its service name (-s <service-name>) (assuming there is a /var/run/<name>.pid file holding its pid)
+*  its process name (-n <name>) (assuming that there is a single process that can be greped by its name using ps -e command).
+
+Usage:
+------
+
+    Usage: ./check_of.sh -v
+        Print version and exit
+    Usage: ./check_of.sh -h
+        Print this help nd exit
+    Usage: ./check_of.sh -p <pid> [-w <%ratio>] [-c <%ratio>]
+    Usage: ./check_of.sh -s <service> [-w <%ratio>] [-c <%ratio>]
+    Usage: ./check_of.sh -n <name> [-w <%ratio>] [-c <%ratio>]
+        -p <pid>       the PID of process to monitor
+        -s <service>   the service name of process to monitor
+        -n <name>      the process name to monitor
+        -w <%>         the warning threshold ratio current/max in %
+        -c <%>         the critical threshold ratio current/max in %
+
     
