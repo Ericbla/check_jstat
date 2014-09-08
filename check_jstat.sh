@@ -30,7 +30,7 @@ function usage() {
     echo "Usage: $prog -v";
     echo "       Print version and exit"
     echo "Usage: $prog -h";
-    echo "      Print this help nd exit"
+    echo "      Print this help and exit"
     echo "Usage: $prog -p <pid> [-w <%ratio>] [-c <%ratio>]";
     echo "Usage: $prog -s <service> [-w <%ratio>] [-c <%ratio>]";
     echo "Usage: $prog -j <java-name> [-w <%ratio>] [-c <%ratio>]";
