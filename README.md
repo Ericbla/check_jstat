@@ -28,13 +28,13 @@ This plugin also attach perfomance data to the output:
 Usage:
 ------
 
-    chech_jstat.sh -v  
+    check_jstat.sh -v  
         Print version and exit"  
-    chech_jstat.sh -h  
+    check_jstat.sh -h  
         Print this help nd exit  
-    chech_jstat.sh -p <pid> [-w <%ratio>] [-c <%ratio>]  
-    chech_jstat.sh -s <service> [-w <%ratio>] [-c <%ratio>]  
-    chech_jstat.sh -j <java-name> [-w <%ratio>] [-c <%ratio>]  
+    check_jstat.sh -p <pid> [-w <%ratio>] [-c <%ratio>]  
+    check_jstat.sh -s <service> [-w <%ratio>] [-c <%ratio>]  
+    check_jstat.sh -j <java-name> [-w <%ratio>] [-c <%ratio>]  
         -p <pid>       the PID of process to monitor  
         -s <service>   the service name of process to monitor  
         -j <java-name> the java app (see jps) process to monitor  
