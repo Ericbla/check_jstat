@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 #
 # A simple Nagios command that check some statistics of a JAVA JVM.
