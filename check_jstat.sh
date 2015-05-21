@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 #
 # A simple Nagios command that check some statistics of a JAVA JVM.
@@ -43,7 +43,7 @@ function usage() {
     echo "       -c <%>         the critical threshold ratio current/max in %"
 }
 
-VERSION='1.3'
+VERSION='1.4'
 service=''
 pid=''
 ws=-1
