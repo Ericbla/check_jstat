@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 #
 # A simple Nagios plugin that check the number of open files owned by a process.
