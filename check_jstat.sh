@@ -39,6 +39,7 @@ function usage() {
     echo "       -j <java-name> the java app (see jps) process to monitor"
     echo "                      if this name in blank (-j '') any java app is"
     echo "                      looked for (as long there is only one)"
+    echo "       -J <java-name> same as -j but checks on 'jps -v' output"
     echo "       -w <%>         the warning threshold ratio current/max in %"
     echo "       -c <%>         the critical threshold ratio current/max in %"
 }
@@ -49,8 +50,9 @@ pid=''
 ws=-1
 cs=-1
 use_jps=0
+jps_verbose=0
 
-while getopts hvp:s:j:w:c: opt ; do
+while getopts hvp:s:j:J:w:c: opt ; do
     case ${opt} in
     v)  echo "$0 version $VERSION"
         exit 0
@@ -64,6 +66,10 @@ while getopts hvp:s:j:w:c: opt ; do
         ;;
     j)  java_name="${OPTARG}"
         use_jps=1
+        ;;
+    J)  java_name="${OPTARG}"
+        use_jps=1
+        jps_verbose=1
         ;;
     w)  ws="${OPTARG}"
         ;;
@@ -96,7 +102,11 @@ fi
 
 if [ $use_jps -eq 1 ] ; then
     if [ -n "$java_name" ] ; then
-        java=$(jps | grep "$java_name" 2>/dev/null)
+        if [ "${jps_verbose}" = "1" ]; then
+            java=$(jps -v | grep "$java_name" 2>/dev/null)
+        else
+            java=$(jps | grep "$java_name" 2>/dev/null)
+        fi
     else
         java=$(jps | grep -v Jps 2>/dev/null)
     fi
