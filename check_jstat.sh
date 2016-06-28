@@ -166,8 +166,8 @@ pgcmx=$(expr "${12}" : '\([0-9]\+\)')
 #echo "ou=${ou}k ogcmx=${ogcmx}k"
 #echo "pu=${pu}k pgcmx=${pgcmx}k"
 
-heap=$(($eu + $ou))
-heapmx=$(($ygcmx + $ogcmx))
+heap=$((($eu + $ou)*1024))
+heapmx=$((($ygcmx + $ogcmx)*1024))
 heapratio=$((($heap * 100) / $heapmx))
 permratio=$((($pu * 100) / $pgcmx))
 #echo "youg+old=${heap}k, (Max=${heapmx}k, current=${heapratio}%)"
