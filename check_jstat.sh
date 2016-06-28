@@ -25,7 +25,7 @@
 
 
 # Usage helper for this script
-function usage() {
+usage() {
     local prog="${1:-check_jstat.sh}"
     echo "Usage: $prog -v";
     echo "       Print version and exit"
@@ -128,15 +128,18 @@ else
     label=$pid
 fi
 
-if [ ! -d /proc/$pid ] ; then
+ps -p "$pid" > /dev/null
+if [ "$?" != "0" ] ; then
     echo "CRITICAL: process pid[$pid] not found"
     exit 2
-fi
-
-proc_name=$(cat /proc/$pid/status | grep 'Name:' | sed -e 's/Name:[ \t]*//')
-if [ "$proc_name" != "java" ]; then
-    echo "CRITICAL: process pid[$pid] seems not to be a JAVA application"
-    exit 2
+else
+    if [ -d /proc/$pid ] ; then
+        proc_name=$(cat /proc/$pid/status | grep 'Name:' | sed -e 's/Name:[ \t]*//')
+        if [ "$proc_name" != "java" ]; then
+            echo "CRITICAL: process pid[$pid] seems not to be a JAVA application"
+            exit 2
+        fi
+    fi
 fi
 
 gc=$(jstat -gc $pid | tail -1 | sed -e 's/[ ][ ]*/ /g')
@@ -146,9 +149,9 @@ if [ -z "$gc" ]; then
 fi
 #echo "gc=$gc"
 set -- $gc
-eu=$(expr "${6}" : '\([0-9]\+\)')
-ou=$(expr "${8}" : '\([0-9]\+\)')
-pu=$(expr "${10}" : '\([0-9]\+\)')
+eu=$(expr "${6}" : '\([0-9]*\)')
+ou=$(expr "${8}" : '\([0-9]*\)')
+pu=$(expr "${10}" : '\([0-9]*\)')
 
 gccapacity=$(jstat -gccapacity $pid | tail -1 | sed -e 's/[ ][ ]*/ /g')
 if [ -z "$gccapacity" ]; then
