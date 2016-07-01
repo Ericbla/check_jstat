@@ -7,6 +7,7 @@ The process selection is done either by:
 *  its pid (-p <pid>)
 *  its service name (-s <service-name>) (assuming there is a /var/run/<name>.pid file holding its pid)
 *  its java name (-j <java name>) where the java name depends on how the java application has been launched (main class or jar/war in case of java -jar) (see jps).
+*  its java name or parameters (-J <java name>) (see jps -v).
 
 
 It then call `jstat -gc` and `jstat -gccapacity` to catch current and
@@ -32,16 +33,19 @@ Usage:
         Print version and exit"
     check_jstat.sh -h
         Print this help nd exit
-    check_jstat.sh -p <pid> [-w <%ratio>] [-c <%ratio>]
-    check_jstat.sh -s <service> [-w <%ratio>] [-c <%ratio>]
-    check_jstat.sh -j <java-name> [-w <%ratio>] [-c <%ratio>]
+    check_jstat.sh -p <pid> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
+    check_jstat.sh -s <service> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
+    check_jstat.sh -j <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
+    check_jstat.sh -J <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
         -p <pid>       the PID of process to monitor
         -s <service>   the service name of process to monitor
         -j <java-name> the java app (see jps) process to monitor
                        if this name in blank (-j '') any java app is
                        looked for (as long there is only one)
-        -w <%> the warning threshold ratio current/max in %
-        -c <%> the critical threshold ratio current/max in %
+        -J <java-name> same as -j but checks on 'jps -v' output
+        -P <java-home> use this java installation path
+        -w <%> the warning threshold ratio current/max in % (defaults to 90)
+        -c <%> the critical threshold ratio current/max in % (defaults to 95)
 
 Configuration:
 --------------
