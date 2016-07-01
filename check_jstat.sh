@@ -32,16 +32,17 @@ usage() {
     echo "       Print version and exit"
     echo "Usage: $prog -h";
     echo "      Print this help and exit"
-    echo "Usage: $prog -p <pid> [-w <%ratio>] [-c <%ratio>]";
-    echo "Usage: $prog -s <service> [-w <%ratio>] [-c <%ratio>]";
-    echo "Usage: $prog -j <java-name> [-w <%ratio>] [-c <%ratio>]";
-    echo "Usage: $prog -J <java-name> [-w <%ratio>] [-c <%ratio>]";
+    echo "Usage: $prog -p <pid> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]";
+    echo "Usage: $prog -s <service> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]";
+    echo "Usage: $prog -j <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]";
+    echo "Usage: $prog -J <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]";
     echo "       -p <pid>       the PID of process to monitor"
     echo "       -s <service>   the service name of process to monitor"
     echo "       -j <java-name> the java app (see jps) process to monitor"
     echo "                      if this name in blank (-j '') any java app is"
     echo "                      looked for (as long there is only one)"
     echo "       -J <java-name> same as -j but checks on 'jps -v' output"
+    echo "       -P <java-home> use this java installation path"
     echo "       -w <%>         the warning threshold ratio current/max in % (defaults to 90)"
     echo "       -c <%>         the critical threshold ratio current/max in % (defaults to 95)"
 }
@@ -53,8 +54,9 @@ ws=90
 cs=95
 use_jps=0
 jps_verbose=0
+java_home=''
 
-while getopts hvp:s:j:J:w:c: opt ; do
+while getopts hvp:s:j:J:P:w:c: opt ; do
     case ${opt} in
     v)  echo "$0 version $VERSION"
         exit 0
@@ -72,6 +74,8 @@ while getopts hvp:s:j:J:w:c: opt ; do
     J)  java_name="${OPTARG}"
         use_jps=1
         jps_verbose=1
+        ;;
+    P)  java_home="${OPTARG}"
         ;;
     w)  ws="${OPTARG}"
         ;;
@@ -100,6 +104,16 @@ if [ -n "$service" -a $use_jps -eq 1 ] ; then
     echo "Only one of -s or -j parameter must be provided"
     usage $0
     exit 3
+fi
+
+if [ -n "${java_home}" ] ; then
+    if [ -x "${java_home}/bin/jstat" ] ; then
+        PATH="${java_home}/bin:${PATH}"
+    else
+        echo "jstat not found in ${java_home}/bin"
+        usage $0
+        exit 3
+    fi
 fi
 
 if [ $use_jps -eq 1 ] ; then
