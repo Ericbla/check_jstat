@@ -3,10 +3,10 @@
 #
 # A simple Nagios command that check some statistics of a JAVA JVM.
 #
-# It first chech that the process specified by its pid (-p) or its
+# It first checks that the process specified by its pid (-p) or its
 # service name (-s) (assuming there is a /var/run/<name>.pid file
 # holding its pid) is running and is a java process.
-# It then call jstat -gc and jstat -gccapacity to catch current and
+# It then calls jstat -gc and jstat -gccapacity to catch current and
 # maximum 'heap' and 'perm' sizes.
 # What is called 'heap' here is the edden + old generation space,
 # while 'perm' represents the permanent generation space or metaspace
