@@ -186,7 +186,7 @@ pgcmx=$(($(expr "${12}" : '\([0-9]*\)')*1024))
 #echo "pu=${pu}k pgcmx=${pgcmx}k"
 
 heap=$((($eu + $ou)))
-heapmx=$((($ygcmx)))
+heapmx=$((($ygcmx + $ogcmx)))
 heapratio=$((($heap * 100) / $heapmx))
 permratio=$((($pu * 100) / $pgcmx))
 
