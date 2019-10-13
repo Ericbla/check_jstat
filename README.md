@@ -33,11 +33,11 @@ Usage:
         Print version and exit"
     check_jstat.sh -h
         Print this help nd exit
-    check_jstat.sh -p <pid> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
+    check_jstat.sh -p <pid> [-p <pid> [-p ...]] [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
     check_jstat.sh -s <service> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
     check_jstat.sh -j <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
     check_jstat.sh -J <java-name> [-w <%ratio>] [-c <%ratio>] [-P <java-home>]
-        -p <pid>       the PID of process to monitor
+        -p <pid>       the PID of process to monitor, might be multiple times entered
         -s <service>   the service name of process to monitor
         -j <java-name> the java app (see jps) process to monitor
                        if this name in blank (-j '') any java app is
